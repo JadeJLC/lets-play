@@ -1,6 +1,7 @@
 package com.project.lets_play.service;
 
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.project.lets_play.repository.ProductRepository;
 import com.project.lets_play.model.Product;
@@ -28,6 +29,10 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
        return  createProduct(product);
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
     
 }

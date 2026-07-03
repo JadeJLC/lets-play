@@ -1,6 +1,7 @@
 package com.project.lets_play.service;
 
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.project.lets_play.repository.UserRepository;
 import com.project.lets_play.model.User;
@@ -27,8 +28,11 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-      
        return  createUser(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
     
 }
