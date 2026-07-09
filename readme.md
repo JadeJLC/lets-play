@@ -23,3 +23,11 @@ Redémarrer après modifications
 ```
 sudo systemctl restart mongod
 ```
+
+# Commandes terminal de l'application
+
+Lancer l'appli
+
+```
+mvn spring-boot:run
+```
