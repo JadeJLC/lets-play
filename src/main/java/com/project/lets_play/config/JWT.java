@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.project.lets_play.model.User;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -42,9 +45,32 @@ public class JWT {
         return calendar.getTime();
     }
 
-    public void extractTokenData() {}
+    public void extractTokenData(CharSequence compact) {
+        Claims claims = isTokenValid(compact);
+        if (claims == null) {
+            return ;
+        }
 
-    public boolean isTokenValid() {
-        return false;
+
+
+        String email = claims.getSubject(); 
+        String role = claims.get("role", String.class);
+
+    }
+
+    public Claims isTokenValid(CharSequence compact) {
+        try {
+        Jws<Claims> claimsJws = Jwts.parser()
+            .verifyWith(generateKey(secretKey)) 
+            .build()
+            .parseSignedClaims(compact); 
+
+        Claims claims = claimsJws.getPayload();
+        return claims;
+
+    } catch (JwtException | IllegalArgumentException e) {
+        System.out.println("Token validation failed: " + e.getMessage());
+        return null;
+    }
     }
 }
