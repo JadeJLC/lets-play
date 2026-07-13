@@ -6,12 +6,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Gestion des mots de passe et de la sécurité de l'API
  */
 @Configuration
 public class SecurityConfig {
+	private AuthFilter authFilter;
+
+	public SecurityConfig(AuthFilter authFilter) {
+        this.authFilter = authFilter;
+    }
 
 	/**
 	 * Gestion des mots de passe via PasswordEncoder, fourni par SpringBoot
@@ -36,8 +42,11 @@ public class SecurityConfig {
 	    http
     	    .csrf(csrf -> csrf.disable())
         	.authorizeHttpRequests(auth -> auth
-            	.anyRequest().permitAll()
-        	);
+            	.anyRequest().
+				permitAll()
+        	)
+			.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); // Vérifie le token avant que SpringSecurity cherche un formulaire de connexion
+
     	return http.build();
 	}
 
