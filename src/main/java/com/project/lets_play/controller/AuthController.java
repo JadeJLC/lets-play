@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Gestion des routes d'authentification via /auth
+ * Prend un authService pour les fonctionnalités et les méthodes internes
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -18,7 +22,8 @@ public class AuthController {
         this.authService = authService;
     }
 
-     @PostMapping("/login")
+    // Gère la connexion via le chemin /login
+    @PostMapping("/login")
     public String authentication(@RequestBody Credentials credentials) {
         return authService.login(credentials);
         

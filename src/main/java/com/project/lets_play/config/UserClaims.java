@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param role {String} admin/user
  */
 public record UserClaims(String email, String role) {
-    // S'assure que le mail et le rôle envoyés ne sont jamais nuls
     public UserClaims {
         Objects.requireNonNull(email);
         Objects.requireNonNull(role);

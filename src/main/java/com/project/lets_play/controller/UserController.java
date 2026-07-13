@@ -13,6 +13,11 @@ import java.util.List;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
 
+/**
+ * Gestion des routes d'accès aux utilisateurs via /users
+ * Prend un userervice pour les fonctionnalités et les méthodes internes
+ * Implémentation de CRUD (Create, Read, Update, Delete) pour chaque utilisateur + récupération de la liste complète
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {

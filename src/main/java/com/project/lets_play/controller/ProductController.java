@@ -13,6 +13,11 @@ import java.util.List;
 import com.project.lets_play.service.ProductService;
 import com.project.lets_play.model.Product;
 
+/**
+ * Gestion des routes d'accès auxs produits via /products
+ * Prend un productService pour les fonctionnalités et les méthodes internes
+ * Implémentation de CRUD (Create, Read, Update, Delete) pour chaque produit + récupération de la liste complète
+ */
 @RestController
 @RequestMapping("/products")
 public class ProductController {
