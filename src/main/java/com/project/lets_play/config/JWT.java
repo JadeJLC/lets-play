@@ -2,6 +2,8 @@ package com.project.lets_play.config;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import javax.crypto.SecretKey;
 
@@ -34,6 +36,7 @@ public class JWT {
         .subject(user.getEmail())
         .issuedAt(now)
         .expiration(expiDate)
+        .claim("role", user.getRole())
         .signWith(generateKey(secretKey))
         .compact();
     }
@@ -45,17 +48,16 @@ public class JWT {
         return calendar.getTime();
     }
 
-    public void extractTokenData(CharSequence compact) {
+    public Optional<UserClaims> extractTokenData(CharSequence compact) {
         Claims claims = isTokenValid(compact);
         if (claims == null) {
-            return ;
+            return Optional.empty();
         }
-
-
 
         String email = claims.getSubject(); 
         String role = claims.get("role", String.class);
 
+        return Optional.of(new UserClaims(email, role));
     }
 
     public Claims isTokenValid(CharSequence compact) {

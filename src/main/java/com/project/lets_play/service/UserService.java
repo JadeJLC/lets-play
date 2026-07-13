@@ -33,6 +33,10 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+    }
+
     public User updateUser(User user) {
        return  createUser(user);
     }
