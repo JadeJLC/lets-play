@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 
 /**
- * Classe User conforme au diagramme de classe fourni
+ * Classe Products conforme au diagramme de classe fourni
  * Chaque produit un un id unique, un nom, une description et un prix
  * userId définit l'utilisateur propriétaire de l'objet via son id unique
  * @Document(collection) est un indicateur pour MongoDB pour créer une nouvelle collection/table de données "products"

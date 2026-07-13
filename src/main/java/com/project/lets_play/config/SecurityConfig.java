@@ -7,9 +7,16 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Gestion des mots de passe et de la sécurité de l'API
+ */
 @Configuration
 public class SecurityConfig {
 
+	/**
+	 * Gestion des mots de passe via PasswordEncoder, fourni par SpringBoot
+	 * Encode les mots de passe selon la méthode moderne la plus sécurisée, sans casser les précédents mots de passe
+	 */
     @Bean
     public PasswordEncoder createPasswordEncoder() {
 		PasswordEncoder passwordEncoder =
@@ -17,6 +24,13 @@ public class SecurityConfig {
 		return passwordEncoder;
 	}
 
+	/**
+	 * Gestion des autorisations d'accès à l'API via analyse des requêtes HTML
+	 * Statut temporaire sur permitAll pour les tests internes, sera modifié ultérieurement
+	 * @param http {HttpSecurity} élément SpringSecurity lié à la requête
+	 * @return {FilterChain} une série d'actions de vérification à appliquer
+	 * @throws Exception 
+	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http

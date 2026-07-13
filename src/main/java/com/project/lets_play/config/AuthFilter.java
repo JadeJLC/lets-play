@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Filtrage des requêtes HTML selon les autorisations de l'utilisateur
+ * (En cours de conception)
+ */
 public class AuthFilter extends OncePerRequestFilter{
     private JWT jwtToken;
 
@@ -18,6 +22,14 @@ public class AuthFilter extends OncePerRequestFilter{
         this.jwtToken = jwToken;        
     }
     
+    /**
+     * Méthode de vérification des autorisations de l'utilisateur via lecture du token
+     * @param request Requête HTML dont sera extraite le token
+     * @param response 
+     * @param filterChain Suite de la chaîne de vérification
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
             throws ServletException, IOException {
