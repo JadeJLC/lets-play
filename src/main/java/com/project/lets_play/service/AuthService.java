@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.lets_play.config.JWT;
+import com.project.lets_play.config.Credentials;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
 
@@ -20,13 +21,13 @@ public class AuthService {
         this.userService = userService;
     }
 
-    public String login(String email, String password) {
-        User user = userService.findByEmail(email);
+    public String login(Credentials credentials) {
+        User user = userService.findByEmail(credentials.email());
         if (user == null) {
             return null;
         }
 
-        if (passwordEncoder.matches(password, user.getPassword())) {
+        if (passwordEncoder.matches(credentials.password(), user.getPassword())) {
             return jwToken.generateToken(user);
         } else {
             return null;
