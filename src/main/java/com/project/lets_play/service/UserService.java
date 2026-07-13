@@ -7,6 +7,10 @@ import java.util.List;
 import com.project.lets_play.repository.UserRepository;
 import com.project.lets_play.model.User;
 
+/**
+ * UserService fait appel à toutes les fonctions de userRepository pour gérer les utilisateurs dans la base de données / API
+ * Tous les controllers passent par un userService pour gérer les appels à la collection users
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;

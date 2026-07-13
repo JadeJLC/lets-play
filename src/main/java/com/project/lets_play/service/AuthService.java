@@ -8,6 +8,10 @@ import com.project.lets_play.config.Credentials;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
 
+/**
+ * Gestion complète de l'authentification des utilisateurs
+ * Fonctionne avec le passwordEncoder, un token et un userService
+ */
 @Service
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
@@ -21,6 +25,11 @@ public class AuthService {
         this.userService = userService;
     }
 
+    /**
+     * Gestion de la connexion d'un utilisateur via son email et son mot de passe
+     * @param credentials 
+     * @return le token de connexion ou null si l'utilisateur n'est pas trouvé
+     */
     public String login(Credentials credentials) {
         User user = userService.findByEmail(credentials.email());
         if (user == null) {

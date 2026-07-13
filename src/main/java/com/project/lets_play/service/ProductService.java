@@ -6,6 +6,10 @@ import java.util.List;
 import com.project.lets_play.repository.ProductRepository;
 import com.project.lets_play.model.Product;
 
+/**
+ * ProductService fait appel à toutes les fonctions de productRepository pour gérer les produits dans la base de données / API
+ * Tous les controllers passent par un productService pour gérer les appels à la collection products
+ */
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
