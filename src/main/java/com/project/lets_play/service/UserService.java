@@ -26,10 +26,16 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+   
     private boolean validInput(String input) {
-        return Pattern.matches("^\\w+$]", input); 
-    }
+        if (input == null) {
+            return false;
+        }
 
+        // Allows: letters, numbers, spaces, and safe symbols (!, #, %, &, *, (, ), +, ,, -, ., /, :, ;, <, =, >, ?, @, ^, _, `, |, ~)
+        // Excludes: $, {, }, [, ], ", ', and \
+        return Pattern.matches("^[a-zA-Z0-9 !#%&()*+,\\-./:;<=>?@^_`|~]+$", input);
+    }
 
     public User createUser(User user) {
         if (!validInput(user.getEmail()) || !validInput(user.getPassword())) {
@@ -51,7 +57,7 @@ public class UserService {
         }
     }
 
-    public User readUser(String id) {
+    public User readUser(String id) {        
         return userRepository.findById(id).orElseThrow(
             () -> new UserNotFoundException("Impossible de trouver l'utilisateur d'id " + id));
     }

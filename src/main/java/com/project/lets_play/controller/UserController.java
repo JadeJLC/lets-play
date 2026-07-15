@@ -41,7 +41,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable String id) {
-        return userService.readUser(id);
+        User user = userService.readUser(id);
+
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        
+        user.setPassword("");
+        return user;
     }
 
     @PutMapping
