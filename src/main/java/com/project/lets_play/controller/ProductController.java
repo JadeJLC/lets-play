@@ -1,6 +1,7 @@
 package com.project.lets_play.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+
+import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.ProductService;
 import com.project.lets_play.model.Product;
 
@@ -22,14 +25,22 @@ import com.project.lets_play.model.Product;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final AuthService authService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AuthService authService) {
         this.productService = productService;
+        this.authService = authService;
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product createProduct(@RequestBody Product product, Authentication authentication) {
+        String ownerId = product.getUserId();
+
+        if (authService.isIdAuthorized(ownerId, authentication)) {
+            return productService.createProduct(product);
+        } else {
+            return null;
+        }
     }
 
     @GetMapping("/{id}")
@@ -38,13 +49,23 @@ public class ProductController {
     }
 
     @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    public Product updateProduct(@RequestBody Product product, Authentication authentication) {
+        String ownerId = product.getUserId();
+
+        if (authService.isIdAuthorized(ownerId, authentication)) {
+            return productService.updateProduct(product);
+        } else {
+            return null;
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable String id) {
+    public void deleteProduct(@PathVariable String id, Authentication authentication) {
+        String ownerId = getProduct(id).getUserId();
+
+        if (authService.isIdAuthorized(ownerId, authentication)) {
         productService.deleteProduct(id);
+        }
         return;
     }
 
@@ -53,5 +74,5 @@ public class ProductController {
         return productService.getAllProducts();
     }
     
-
+    
 }

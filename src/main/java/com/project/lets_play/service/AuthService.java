@@ -2,6 +2,7 @@ package com.project.lets_play.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
 import com.project.lets_play.config.JWT;
 import com.project.lets_play.config.Credentials;
@@ -42,6 +43,23 @@ public class AuthService {
             return null;
         }
 
+    }
+
+    public boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities()
+                             .stream()
+                             .anyMatch(role -> role.getAuthority().equals("admin"));
+    }
+
+    public boolean isAuthorized(String email, Authentication authentication) {
+        String requesterEmail = authentication.getName();
+        return requesterEmail.equals(email) || isAdmin(authentication);
+    }
+
+    public boolean isIdAuthorized(String id, Authentication authentication) {
+        String email = userService.readUser(id).getEmail();
+        String requesterEmail = authentication.getName();
+        return requesterEmail.equals(email) || isAdmin(authentication);
     }
 
 }

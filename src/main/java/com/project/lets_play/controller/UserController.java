@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+
+import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
 
@@ -23,9 +25,11 @@ import com.project.lets_play.model.User;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @PostMapping
@@ -40,7 +44,7 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@RequestBody User user, Authentication authentication) {
-        if (isAuthorized(user.getEmail(), authentication)) {
+        if (authService.isAuthorized(user.getEmail(), authentication)) {
             return userService.updateUser(user);
         } else {
             return null;
@@ -51,7 +55,7 @@ public class UserController {
     public void deleteUser(@PathVariable String id, Authentication authentication) {
         String email = getUser(id).getEmail();
 
-        if (isAuthorized(email, authentication)) {
+        if (authService.isAuthorized(email, authentication)) {
         userService.deleteUser(id);
         }
         return;
@@ -59,22 +63,11 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers(Authentication authentication) {
-        if (isAdmin(authentication)) {
+        if (authService.isAdmin(authentication)) {
             return userService.getAllUsers();
         } else {
             return null;
         }
     }
     
-    private boolean isAdmin(Authentication authentication) {
-        return authentication.getAuthorities()
-                             .stream()
-                             .anyMatch(role -> role.getAuthority().equals("admin"));
-    }
-
-
-    private boolean isAuthorized(String email, Authentication authentication) {
-        String requesterEmail = authentication.getName();
-        return requesterEmail.equals(email) || isAdmin(authentication);
-    }
 }
