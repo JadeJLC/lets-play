@@ -6,8 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.project.lets_play.service.AuthService;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +61,6 @@ public class AuthFilter extends OncePerRequestFilter{
             });
         }
         
-
         // Une fois le filtre fini, on passe aux étapes de vérification suivantes
         filterChain.doFilter(request, response); 
     }    

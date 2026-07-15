@@ -1,7 +1,9 @@
 package com.project.lets_play.config;
 
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 public class SecurityConfig {
-	private AuthFilter authFilter;
+	private final AuthFilter authFilter;
 
 	public SecurityConfig(AuthFilter authFilter) {
         this.authFilter = authFilter;
@@ -42,8 +44,9 @@ public class SecurityConfig {
 	    http
     	    .csrf(csrf -> csrf.disable())
         	.authorizeHttpRequests(auth -> auth
-            	.anyRequest().
-				permitAll()
+				.requestMatchers(HttpMethod.GET, "/products").permitAll()
+				.requestMatchers(HttpMethod.GET, "/users").hasAuthority("admin")
+            	.anyRequest().authenticated()
         	)
 			.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); // Vérifie le token avant que SpringSecurity cherche un formulaire de connexion
 

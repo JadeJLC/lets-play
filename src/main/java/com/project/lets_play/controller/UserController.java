@@ -1,6 +1,7 @@
 package com.project.lets_play.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,20 +39,42 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+    public User updateUser(@RequestBody User user, Authentication authentication) {
+        if (isAuthorized(user.getEmail(), authentication)) {
+            return userService.updateUser(user);
+        } else {
+            return null;
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable String id, Authentication authentication) {
+        String email = getUser(id).getEmail();
+
+        if (isAuthorized(email, authentication)) {
         userService.deleteUser(id);
+        }
         return;
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<User> getAllUsers(Authentication authentication) {
+        if (isAdmin(authentication)) {
+            return userService.getAllUsers();
+        } else {
+            return null;
+        }
     }
     
+    private boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities()
+                             .stream()
+                             .anyMatch(role -> role.getAuthority().equals("admin"));
+    }
 
+
+    private boolean isAuthorized(String email, Authentication authentication) {
+        String requesterEmail = authentication.getName();
+        return requesterEmail.equals(email) || isAdmin(authentication);
+    }
 }
