@@ -4,12 +4,12 @@ public class UserNotFoundException extends RuntimeException {
     private String message;
 
     public UserNotFoundException() {
-        super("Impossible de trouver cet utilisateur. Veuillez réessayez.");
-        this.message = "Impossible de trouver cet utilisateur. Veuillez réessayez.";
+        super("Erreur 404 [Not Found] : Impossible de trouver cet utilisateur. Veuillez réessayez.");
+        this.message = "Erreur 404 [Not Found] : Impossible de trouver cet utilisateur. Veuillez réessayez.";
     }
 
     public UserNotFoundException(String msg) {
-        super(msg);
-        this.message = msg;
+        super("Erreur 404 [Not Found] : " + msg);
+        this.message = "Erreur 404 [Not Found] : " + msg;
     }
 }

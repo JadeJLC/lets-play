@@ -4,12 +4,12 @@ public class UserAlreadyExistsException extends RuntimeException {
     private String message;
 
     public UserAlreadyExistsException() {
-        super("Cet utilisateur existe déjà. Essayez avec d'autres identifiants");
-        this.message = "Cet utilisateur existe déjà. Essayez avec d'autres identifiants";
+        super("Erreur 403 [Forbidden] : Impossible de créer cet utilisateur. Ce compte existe déjà ou des données sont manquantes ou erronées.");
+        this.message = "Erreur 403 [Forbidden] : Impossible de créer cet utilisateur. Ce compte existe déjà ou des données sont manquantes ou erronées.";
     }
 
     public UserAlreadyExistsException(String msg) {
-        super(msg);
-        this.message = msg;
+        super("Erreur 403 [Forbidden] : " + msg);
+        this.message = "Erreur 403 [Forbidden] : " + msg;
     }
 }

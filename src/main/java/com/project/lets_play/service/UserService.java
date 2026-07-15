@@ -3,8 +3,12 @@ package com.project.lets_play.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.project.lets_play.repository.UserRepository;
+
+import lombok.val;
+
 import com.project.lets_play.errorhandling.UserNotFoundException;
 import com.project.lets_play.model.User;
 
@@ -22,7 +26,16 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private boolean validInput(String input) {
+        return Pattern.matches("^\\w+$]", input); 
+    }
+
+
     public User createUser(User user) {
+        if (!validInput(user.getEmail()) || !validInput(user.getPassword())) {
+            throw new IllegalArgumentException("Erreur 422 [Unprocessable Content] : Caractères non autorisés dans le mot de passe ou l'email utilisateur.");
+        }
+
         String rawPassword = user.getPassword();
         String hashedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(hashedPassword);
@@ -30,8 +43,12 @@ public class UserService {
     }
 
     public void deleteUser(String id) {
+        User user = readUser(id);
+        if (user == null) {
+            throw new UserNotFoundException("Impossible de trouver l'utilisateur d'id " + id);
+        } else {
         userRepository.delete(readUser(id));
-        return;
+        }
     }
 
     public User readUser(String id) {

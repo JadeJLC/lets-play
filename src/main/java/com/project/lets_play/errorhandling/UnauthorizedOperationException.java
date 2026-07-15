@@ -4,12 +4,12 @@ public class UnauthorizedOperationException extends RuntimeException {
     private String message;
 
     public UnauthorizedOperationException() {
-        super("Vous n'êtes pas autorisé à effectuer cette action.");
-        this.message = "Vous n'êtes pas autorisé à effectuer cette action.";
+        super("Erreur 403 [Forbidden] : Vous n'avez pas les permissions nécessaires pour effectuer cette action.");
+        this.message = "Erreur 403 [Forbidden] : Vous n'avez pas les permissions nécessaires pour effectuer cette action.";
     }
 
     public UnauthorizedOperationException(String msg) {
-        super(msg);
-        this.message = msg;
+        super("Erreur 403 [Forbidden] : " + msg);
+        this.message = "Erreur 403 [Forbidden] : " + msg;
     }
 }
