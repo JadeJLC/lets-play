@@ -15,6 +15,8 @@ import java.util.List;
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
+import com.project.lets_play.errorhandling.UnauthorizedOperationException;
+import com.project.lets_play.errorhandling.UserNotFoundException;
 
 /**
  * Gestion des routes d'accès aux utilisateurs via /users
@@ -47,7 +49,7 @@ public class UserController {
         if (authService.isAuthorized(user.getEmail(), authentication)) {
             return userService.updateUser(user);
         } else {
-            return null;
+            throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à modifier cet utilisateur.");
         }
     }
 
@@ -57,6 +59,8 @@ public class UserController {
 
         if (authService.isAuthorized(email, authentication)) {
         userService.deleteUser(id);
+        } else {
+            throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à supprimer cet utilisateur.");
         }
         return;
     }
@@ -66,7 +70,7 @@ public class UserController {
         if (authService.isAdmin(authentication)) {
             return userService.getAllUsers();
         } else {
-            return null;
+            throw new UnauthorizedOperationException("Seul un administrateur peut effectuer cette action.");
         }
     }
     

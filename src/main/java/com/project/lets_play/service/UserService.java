@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import com.project.lets_play.repository.UserRepository;
+import com.project.lets_play.errorhandling.UserNotFoundException;
 import com.project.lets_play.model.User;
 
 /**
@@ -34,15 +35,17 @@ public class UserService {
     }
 
     public User readUser(String id) {
-        return userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return userRepository.findById(id).orElseThrow(
+            () -> new UserNotFoundException("Impossible de trouver l'utilisateur d'id " + id));
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+        return userRepository.findByEmail(email).orElseThrow(
+            () -> new UserNotFoundException("Impossible de trouver l'utilisateur à l'adresse " + email));
     }
 
     public User updateUser(User user) {
-       return  createUser(user);
+       return createUser(user);
     }
 
     public List<User> getAllUsers() {

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import com.project.lets_play.repository.ProductRepository;
+import com.project.lets_play.errorhandling.ProductNotFoundException;
 import com.project.lets_play.model.Product;
 
 /**
@@ -28,7 +29,8 @@ public class ProductService {
     }
 
     public Product readProduct(String id) {
-        return productRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return productRepository.findById(id).orElseThrow(
+            () -> new ProductNotFoundException("Impossible de trouver le produit d'id " + id ));
     }
 
     public Product updateProduct(Product product) {

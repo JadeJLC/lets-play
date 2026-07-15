@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.ProductService;
+import com.project.lets_play.errorhandling.UnauthorizedOperationException;
 import com.project.lets_play.model.Product;
 
 /**
@@ -39,7 +40,7 @@ public class ProductController {
         if (authService.isIdAuthorized(ownerId, authentication)) {
             return productService.createProduct(product);
         } else {
-            return null;
+            throw new UnauthorizedOperationException();
         }
     }
 
@@ -55,7 +56,7 @@ public class ProductController {
         if (authService.isIdAuthorized(ownerId, authentication)) {
             return productService.updateProduct(product);
         } else {
-            return null;
+           throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à modifier ce produit.");
         }
     }
 
@@ -65,6 +66,8 @@ public class ProductController {
 
         if (authService.isIdAuthorized(ownerId, authentication)) {
         productService.deleteProduct(id);
+        } else {
+            throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à supprimer ce produit.");
         }
         return;
     }
