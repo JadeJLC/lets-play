@@ -1,6 +1,5 @@
 package com.project.lets_play.config;
 
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -45,10 +44,12 @@ public class SecurityConfig {
     	    .csrf(csrf -> csrf.disable())
         	.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.GET, "/products").permitAll()
+				.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+				.requestMatchers(HttpMethod.POST, "/users").permitAll()
 				.requestMatchers(HttpMethod.GET, "/users").hasAuthority("admin")
             	.anyRequest().authenticated()
         	)
-			.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); // Vérifie le token avant que SpringSecurity cherche un formulaire de connexion
+			.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); 
 
     	return http.build();
 	}

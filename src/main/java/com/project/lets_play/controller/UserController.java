@@ -16,6 +16,7 @@ import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
 import com.project.lets_play.errorhandling.UnauthorizedOperationException;
+import com.project.lets_play.errorhandling.UserAlreadyExistsException;
 import com.project.lets_play.errorhandling.UserNotFoundException;
 
 /**
@@ -36,6 +37,12 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        boolean isValid = userService.findByEmail(user.getEmail()) == null;
+
+        if (!isValid) {
+            throw new UserAlreadyExistsException();
+        }
+
         return userService.createUser(user);
     }
 
@@ -47,7 +54,6 @@ public class UserController {
             throw new UserNotFoundException();
         }
         
-        user.setPassword("");
         return user;
     }
 

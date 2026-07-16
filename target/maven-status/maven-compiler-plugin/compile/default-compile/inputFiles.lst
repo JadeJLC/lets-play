@@ -8,6 +8,7 @@
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/controller/ProductController.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/controller/UserController.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/AuthentificationException.java
+/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/GlobalExceptionHandler.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/ProductNotFoundException.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/UnauthorizedOperationException.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/UserAlreadyExistsException.java

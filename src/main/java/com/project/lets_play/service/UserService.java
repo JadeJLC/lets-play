@@ -7,8 +7,6 @@ import java.util.regex.Pattern;
 
 import com.project.lets_play.repository.UserRepository;
 
-import lombok.val;
-
 import com.project.lets_play.errorhandling.UserNotFoundException;
 import com.project.lets_play.model.User;
 
@@ -50,11 +48,8 @@ public class UserService {
 
     public void deleteUser(String id) {
         User user = readUser(id);
-        if (user == null) {
-            throw new UserNotFoundException("Impossible de trouver l'utilisateur d'id " + id);
-        } else {
+        
         userRepository.delete(readUser(id));
-        }
     }
 
     public User readUser(String id) {        

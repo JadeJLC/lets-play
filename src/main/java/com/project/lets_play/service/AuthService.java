@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
 import com.project.lets_play.config.JWT;
+import com.project.lets_play.errorhandling.AuthenticationException;
 import com.project.lets_play.config.Credentials;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
@@ -34,13 +35,13 @@ public class AuthService {
     public String login(Credentials credentials) {
         User user = userService.findByEmail(credentials.email());
         if (user == null) {
-            return null;
+            throw new AuthenticationException();
         }
 
         if (passwordEncoder.matches(credentials.password(), user.getPassword())) {
             return jwToken.generateToken(user);
         } else {
-            return null;
+            throw new AuthenticationException();
         }
 
     }
