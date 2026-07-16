@@ -30,8 +30,8 @@ public class UserService {
             return false;
         }
 
-        // Allows: letters, numbers, spaces, and safe symbols (!, #, %, &, *, (, ), +, ,, -, ., /, :, ;, <, =, >, ?, @, ^, _, `, |, ~)
-        // Excludes: $, {, }, [, ], ", ', and \
+        // Autorisés : alphanumérique, espaces + symboles (!, #, %, &, *, (, ), +, ,, -, ., /, :, ;, <, =, >, ?, @, ^, _, `, |, ~)
+        // Interdits : symboles dangereux $, {, }, [, ], ", ', et \
         return Pattern.matches("^[a-zA-Z0-9 !#%&()*+,\\-./:;<=>?@^_`|~]+$", input);
     }
 
@@ -47,8 +47,6 @@ public class UserService {
     }
 
     public void deleteUser(String id) {
-        User user = readUser(id);
-        
         userRepository.delete(readUser(id));
     }
 

@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.UserService;
 import com.project.lets_play.model.User;
+import com.project.lets_play.model.UserResponse;
 import com.project.lets_play.errorhandling.UnauthorizedOperationException;
 import com.project.lets_play.errorhandling.UserAlreadyExistsException;
 import com.project.lets_play.errorhandling.UserNotFoundException;
@@ -47,14 +49,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable String id) {
+    public UserResponse getUser(@PathVariable String id) {
         User user = userService.readUser(id);
 
         if (user == null) {
             throw new UserNotFoundException();
         }
+
+        UserResponse response = new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
         
-        return user;
+        return response;
     }
 
     @PutMapping
@@ -79,9 +83,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(Authentication authentication) {
+    public List<UserResponse> getAllUsers(Authentication authentication) {
         if (authService.isAdmin(authentication)) {
-            return userService.getAllUsers();
+           List<User> users = userService.getAllUsers();
+           List<UserResponse> filteredUsers = new ArrayList<UserResponse>();
+
+          for (User user : users) {
+            UserResponse reponse = new UserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            filteredUsers.add(reponse);
+          }
+
+          return filteredUsers;
         } else {
             throw new UnauthorizedOperationException("Seul un administrateur peut effectuer cette action.");
         }
