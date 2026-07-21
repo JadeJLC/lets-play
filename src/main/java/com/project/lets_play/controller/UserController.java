@@ -38,13 +38,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        boolean isValid = userService.findByEmail(user.getEmail()) == null;
-
-        if (!isValid) {
-            throw new UserAlreadyExistsException();
-        }
-
+    public UserResponse createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -56,18 +50,17 @@ public class UserController {
             throw new UserNotFoundException();
         }
 
-        UserResponse response = new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
-        
-        return response;
+        return new UserResponse(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user, Authentication authentication) {
-        if (authService.isAuthorized(user.getEmail(), authentication)) {
-            return userService.updateUser(user);
-        } else {
+    public UserResponse updateUser(@RequestBody User user, Authentication authentication) {
+        if (!authService.isAuthorized(user.getEmail(), authentication)) {
             throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à modifier cet utilisateur.");
-        }
+        } 
+
+        User userToUpdate = userService.readUser(user.getId());
+        return userService.updateUser(userToUpdate, user, authService.isAdmin(authentication));
     }
 
     @DeleteMapping("/{id}")
@@ -89,7 +82,7 @@ public class UserController {
            List<UserResponse> filteredUsers = new ArrayList<UserResponse>();
 
           for (User user : users) {
-            UserResponse reponse = new UserResponse(user.getId(), user.getEmail(), user.getName(), user.getRole());
+            UserResponse reponse = new UserResponse(user);
             filteredUsers.add(reponse);
           }
 

@@ -2,12 +2,13 @@
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/AuthFilter.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/Credentials.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/JWT.java
+/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/RateLimitFilter.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/SecurityConfig.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/config/UserClaims.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/controller/AuthController.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/controller/ProductController.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/controller/UserController.java
-/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/AuthentificationException.java
+/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/AuthenticationException.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/GlobalExceptionHandler.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/ProductNotFoundException.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/UnauthorizedOperationException.java
@@ -15,8 +16,10 @@
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/errorhandling/UserNotFoundException.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/model/Product.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/model/User.java
+/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/model/UserResponse.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/repository/ProductRepository.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/repository/UserRepository.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/service/AuthService.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/service/ProductService.java
 /home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/service/UserService.java
+/home/zone01student/Z01Y1/Java/lets-play/src/main/java/com/project/lets_play/utils/InputValidation.java

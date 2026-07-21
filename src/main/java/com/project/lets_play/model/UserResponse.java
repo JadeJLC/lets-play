@@ -11,11 +11,11 @@ public class UserResponse {
     private String email;
     private String role;
 
-    public UserResponse(String id, String name, String email, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.role = role;
+    public UserResponse(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.role = user.getRole();
     }
     
 }

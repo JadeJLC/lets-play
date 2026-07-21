@@ -32,4 +32,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleLoginFailed(AuthenticationException ex) {
        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<String> handleNullPointer(NullPointerException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une erreur inattendue est survenue. Veuillez réessayer.");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une erreur inattendue est survenue. Veuillez réessayer.");
+    }
 }

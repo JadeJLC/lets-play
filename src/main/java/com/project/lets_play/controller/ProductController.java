@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.ProductService;
+import com.project.lets_play.service.UserService;
 import com.project.lets_play.errorhandling.UnauthorizedOperationException;
 import com.project.lets_play.model.Product;
 
@@ -27,21 +28,22 @@ import com.project.lets_play.model.Product;
 public class ProductController {
     private final ProductService productService;
     private final AuthService authService;
+    private final UserService userService;
 
-    public ProductController(ProductService productService, AuthService authService) {
+    public ProductController(ProductService productService, AuthService authService, UserService userService) {
         this.productService = productService;
         this.authService = authService;
+        this.userService = userService;
     }
 
     @PostMapping
     public Product createProduct(@RequestBody Product product, Authentication authentication) {
-        String ownerId = product.getUserId();
+        String ownerEmail = authentication.getName();
+        String ownerId = userService.findByEmail(ownerEmail).getId();
 
-        if (authService.isIdAuthorized(ownerId, authentication)) {
-            return productService.createProduct(product);
-        } else {
-            throw new UnauthorizedOperationException();
-        }
+        
+        product.setUserId(ownerId);
+        return productService.createProduct(product);
     }
 
     @GetMapping("/{id}")
@@ -51,10 +53,11 @@ public class ProductController {
 
     @PutMapping
     public Product updateProduct(@RequestBody Product product, Authentication authentication) {
-        String ownerId = product.getUserId();
+        Product productToUpdate = productService.readProduct(product.getId());
+        String ownerId = productToUpdate.getUserId();
 
         if (authService.isIdAuthorized(ownerId, authentication)) {
-            return productService.updateProduct(product);
+            return productService.updateProduct(productToUpdate, product);
         } else {
            throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à modifier ce produit.");
         }
