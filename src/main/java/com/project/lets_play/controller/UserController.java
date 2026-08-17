@@ -1,6 +1,7 @@
 package com.project.lets_play.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,6 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PostAuthorize("@authService.isAuthorized(returnObject.email, authentication)")
     public UserResponse getUser(@PathVariable String id) {
         User user = userService.readUser(id);
 
