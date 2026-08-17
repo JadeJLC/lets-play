@@ -15,6 +15,10 @@ import java.util.List;
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.ProductService;
 import com.project.lets_play.service.UserService;
+
+import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
+
 import com.project.lets_play.errorhandling.UnauthorizedOperationException;
 import com.project.lets_play.model.Product;
 
@@ -37,7 +41,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product, Authentication authentication) {
+    public Product createProduct(@Valid @RequestBody Product product, Authentication authentication) {
         String ownerEmail = authentication.getName();
         String ownerId = userService.findByEmail(ownerEmail).getId();
 
@@ -52,7 +56,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public Product updateProduct(@RequestBody Product product, Authentication authentication) {
+    public Product updateProduct(@Valid @RequestBody Product product, Authentication authentication) {
         Product productToUpdate = productService.readProduct(product.getId());
         String ownerId = productToUpdate.getUserId();
 
@@ -76,6 +80,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @PermitAll
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }

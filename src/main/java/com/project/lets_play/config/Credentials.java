@@ -1,6 +1,8 @@
 package com.project.lets_play.config;
 
-import java.util.Objects;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Credentials contient les informations de connexion d'un utilisateur pendant l'action login
@@ -8,9 +10,7 @@ import java.util.Objects;
  * @param email
  * @param password
  */
-public record Credentials(String email, String password) {
-    public Credentials {
-        Objects.requireNonNull(email);
-        Objects.requireNonNull(password);
-    }
-}
+public record Credentials(
+    @NotBlank @Email String email,
+    @NotBlank String password
+) {}

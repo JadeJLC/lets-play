@@ -1,5 +1,6 @@
 package com.project.lets_play.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,11 +18,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
-    Map<String, Bucket> buckets = new ConcurrentHashMap();
+    Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+    @Value("${rate-limit.capacity}")
+    private int capacity;
+
+    @Value("${rate-limit.refill-minutes}")
+    private int refillMinutes;
 
     private Bucket createNewBucket() {
     return Bucket.builder()
-        .addLimit(limit -> limit.capacity(5).refillGreedy(5, Duration.ofMinutes(1)))
+        .addLimit(limit -> limit.capacity(capacity).refillGreedy(capacity, Duration.ofMinutes(refillMinutes)))
         .build();
     }
 

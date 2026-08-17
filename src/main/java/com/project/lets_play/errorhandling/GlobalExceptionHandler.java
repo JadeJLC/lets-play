@@ -1,7 +1,11 @@
 package com.project.lets_play.errorhandling;
 
+import java.nio.file.AccessDeniedException;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,6 +32,11 @@ public class GlobalExceptionHandler {
        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleUnauthorized(AccessDeniedException ex) {
+       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String> handleLoginFailed(AuthenticationException ex) {
        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
@@ -43,8 +52,15 @@ public class GlobalExceptionHandler {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une erreur inattendue est survenue. Veuillez réessayer.");
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleNotValidException(MethodArgumentNotValidException ex) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur 400 [Bad Request] : Des données sont manquantes ou erronées. Veuillez réessayer.");
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une erreur inattendue est survenue. Veuillez réessayer.");
     }
+
+    
 }

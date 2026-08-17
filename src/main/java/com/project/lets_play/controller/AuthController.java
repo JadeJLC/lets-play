@@ -3,6 +3,9 @@ package com.project.lets_play.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.lets_play.service.AuthService;
+
+import jakarta.validation.Valid;
+
 import com.project.lets_play.config.Credentials;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +27,7 @@ public class AuthController {
 
     // Gère la connexion via le chemin /login
     @PostMapping("/login")
-    public String authentication(@RequestBody Credentials credentials) {
+    public String authentication(@Valid @RequestBody Credentials credentials) {
         return authService.login(credentials);
         
     }

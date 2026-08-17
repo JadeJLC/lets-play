@@ -1,14 +1,12 @@
 package com.project.lets_play.model;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UserResponse {
-    @Id
+public class UserUpdateRequest {
+    @NotBlank
     private String id;
 
     @NotBlank
@@ -18,12 +16,4 @@ public class UserResponse {
     private String email;
 
     private String role;
-
-    public UserResponse(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.role = user.getRole();
-    }
-    
 }

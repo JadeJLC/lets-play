@@ -2,6 +2,11 @@ package com.project.lets_play.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -17,8 +22,16 @@ public class Product {
 
     @Id
     private String id;
+
+    @Field @NotBlank @Size(min = 3)
     private String name;
+
+    @Field 
     private String description;
+
+    @Field @NotNull
     private Double price;
+
+    @Field
     private String userId;
 }

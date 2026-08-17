@@ -1,6 +1,7 @@
 package com.project.lets_play.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,13 @@ import java.util.List;
 
 import com.project.lets_play.service.AuthService;
 import com.project.lets_play.service.UserService;
+
+import jakarta.validation.Valid;
+
 import com.project.lets_play.model.User;
 import com.project.lets_play.model.UserResponse;
+import com.project.lets_play.model.UserUpdateRequest;
 import com.project.lets_play.errorhandling.UnauthorizedOperationException;
-import com.project.lets_play.errorhandling.UserAlreadyExistsException;
 import com.project.lets_play.errorhandling.UserNotFoundException;
 
 /**
@@ -38,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@RequestBody User user) {
+    public UserResponse createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -54,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping
-    public UserResponse updateUser(@RequestBody User user, Authentication authentication) {
+    public UserResponse updateUser(@Valid @RequestBody UserUpdateRequest user, Authentication authentication) {
         if (!authService.isAuthorized(user.getEmail(), authentication)) {
             throw new UnauthorizedOperationException("Vous n'êtes pas autorisé à modifier cet utilisateur.");
         } 
@@ -75,9 +79,9 @@ public class UserController {
         return;
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping
     public List<UserResponse> getAllUsers(Authentication authentication) {
-        if (authService.isAdmin(authentication)) {
            List<User> users = userService.getAllUsers();
            List<UserResponse> filteredUsers = new ArrayList<UserResponse>();
 
@@ -87,9 +91,7 @@ public class UserController {
           }
 
           return filteredUsers;
-        } else {
-            throw new UnauthorizedOperationException("Seul un administrateur peut effectuer cette action.");
-        }
+        
     }
     
 }

@@ -1,9 +1,9 @@
 package com.project.lets_play.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import com.project.lets_play.repository.UserRepository;
 import com.project.lets_play.utils.InputValidation;
@@ -11,6 +11,7 @@ import com.project.lets_play.errorhandling.UserAlreadyExistsException;
 import com.project.lets_play.errorhandling.UserNotFoundException;
 import com.project.lets_play.model.User;
 import com.project.lets_play.model.UserResponse;
+import com.project.lets_play.model.UserUpdateRequest;
 
 /**
  * UserService fait appel à toutes les fonctions de userRepository pour gérer les utilisateurs dans la base de données / API
@@ -22,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final InputValidation inputValidation;
 
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, InputValidation inputValidation) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -60,7 +62,7 @@ public class UserService {
             () -> new UserNotFoundException("Impossible de trouver l'utilisateur à l'adresse " + email));
     }
 
-    public UserResponse updateUser(User userToUpdate, User user, boolean isAdmin) {
+    public UserResponse updateUser(User userToUpdate, UserUpdateRequest user, boolean isAdmin) {
 
         if (!inputValidation.areAllValid(false, user.getEmail(), user.getName())) {
             throw new IllegalArgumentException("Erreur 400 [Bad Request]: Caractères non autorisés dans le nom ou l'email utilisateur.");

@@ -1,5 +1,6 @@
 package com.project.lets_play.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final InputValidation inputValidation;
 
+    @Autowired
     public ProductService(ProductRepository productRepository, InputValidation inputValidation) {
         this.productRepository = productRepository;
         this.inputValidation = inputValidation;
